@@ -1,0 +1,22 @@
+{
+    "hasil": [
+        {
+            "kelas": "X AK 1",
+            "uts1": true,
+            "uts2": false
+        },
+        {
+            "kelas": "X AK 2",
+            "uts1": true,
+            "uts2": false
+        },
+        {
+            "kelas": "X AK 3",
+            "uts1": true,
+            "uts2": false
+        }
+    ],
+    "thn_ajaran": "2023-2024",
+    "link_uts1":"https://docs.google.com",
+    "link_uts2":"https://docs.google.com"
+}
