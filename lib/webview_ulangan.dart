@@ -3,6 +3,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:flutter/services.dart';
 
 /* class UlanganApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -15,14 +16,15 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 */
 
 class WebviewUlangan extends StatefulWidget{
-  
-  const WebviewUlangan({Key? key, required linkurl}) : super(key: key);
+  final String? linkurl;
+
+  const WebviewUlangan({Key? key, required this.linkurl}) : super(key: key);
 
   @override
-  State<WebviewUlangan> createState() => WebviewUlanganState();
+  _WebviewUlanganState createState() => _WebviewUlanganState();
 }
 
-class WebviewUlanganState extends State<WebviewUlangan> {
+class _WebviewUlanganState extends State<WebviewUlangan> with WidgetsBindingObserver {
 
   bool isJudul = false;
   String? _judul;
@@ -37,6 +39,25 @@ class WebviewUlanganState extends State<WebviewUlangan> {
     super.initState();
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.inactive:
+        debugPrint("Inactive");
+        break;
+      case AppLifecycleState.resumed:
+        debugPrint("Resumed");
+        break;
+      case AppLifecycleState.paused:
+        debugPrint("Paused");
+        SystemNavigator.pop();
+        break;
+      case AppLifecycleState.detached:
+        debugPrint("Detached");
+        break;
+    }
+  }
+
   Future<void> disableCapture() async {
     await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE); // tidak bisa screenshot
   }
@@ -49,7 +70,8 @@ class WebviewUlanganState extends State<WebviewUlangan> {
         key: globalKey,
         appBar: AppBar(title: isJudul ? Text(title) : const Text( 'Webview Back Button ')),
         body: WebView(
-          initialUrl: 'https://flutter.dev/',
+          initialUrl: widget.linkurl,
+          // initialUrl: 'https://flutter.dev/',
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (webViewController) async {
             controll.complete(webViewController);
@@ -65,8 +87,13 @@ class WebviewUlanganState extends State<WebviewUlangan> {
           },
           onProgress: (int progress) async {
             debugPrint("WebView is loading (progress : $progress%)");
-            if (progress == 50) {
-              debugPrint(await wvControll!.getTitle());
+            
+            _judul = await wvControll!.getTitle();
+            if (progress >= 50) {
+              setState(() {
+                title = _judul;
+              });
+              debugPrint(_judul);
             }
             debugPrint('============================================');
           },
