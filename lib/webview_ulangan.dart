@@ -37,6 +37,7 @@ class _WebviewUlanganState extends State<WebviewUlangan> with WidgetsBindingObse
   initState() {
     disableCapture();
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
@@ -130,11 +131,12 @@ class _WebviewUlanganState extends State<WebviewUlangan> with WidgetsBindingObse
   Future<bool> _onBack() async {
     var value = await wvControll!.canGoBack();  // check webview can go back
     if (value) {
-      // _controll.goBack(); // perform webview back operation
-      wvControll!.goBack();
+      debugPrint ('dalaam ifffffff');
+      wvControll!.goBack(); // perform webview back operation
       return false;
     } else {
       debugPrint ('dalam else');
+      Navigator.pop(context,true);
       return false;
     }
   }

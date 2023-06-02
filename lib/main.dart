@@ -5,6 +5,7 @@ import 'webview_ulangan.dart';
 // import 'package:http/http.dart' as http;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Location')),
+        appBar: AppBar(title: const Text('Aplikasi Sekolah')),
         body: HomePage()
       )
     );
@@ -59,19 +60,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     // debugPrint (data['hasil'][0]['uts1']);
     debugPrint (data['link_uts1']);
+    setState(() {
+      if (kelas == "X AK 1") {
+        linkuts1 = data['hasil'][0]['uts1'];
+        linkuts2 = data['hasil'][0]['uts2'];
+      }
+      else if (kelas == "X AK 2") {
+        linkuts1 = data['hasil'][1]['uts1'];
+        linkuts2 = data['hasil'][1]['uts2'];
+      }
+      else if (kelas == "X AK 3") {
+        linkuts1 = data['hasil'][2]['uts1'];
+        linkuts2 = data['hasil'][2]['uts2'];
+      }      
+    });
 
-    if (kelas == "X AK 1") {
-      linkuts1 = data['hasil'][0]['uts1'];
-      linkuts2 = data['hasil'][0]['uts2'];
-    }
-    else if (kelas == "X AK 2") {
-      linkuts1 = data['hasil'][1]['uts1'];
-      linkuts2 = data['hasil'][1]['uts2'];
-    }
-    else if (kelas == "X AK 3") {
-      linkuts1 = data['hasil'][2]['uts1'];
-      linkuts2 = data['hasil'][2]['uts2'];
-    }
 
     strlinkuts1 = data['link_uts1'];
     strlinkuts2 = data['link_uts2'];
@@ -91,7 +94,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ElevatedButton.icon(
           icon: Icon(Icons.book_online_rounded, size: 24.0),
           label: const Text("Ulangan Harian 1"),
-          onPressed: linkuts1 ? null : () async {
+          onPressed: !linkuts1 ? null : () async {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => WebviewUlangan(linkurl: strlinkuts1)));
           },
@@ -100,7 +103,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ElevatedButton.icon(
           icon: const Icon(Icons.book_online_rounded, size: 24.0),
           label: const Text("Ulangan Harian 2"),
-          onPressed: linkuts2 ? null : () async {
+          onPressed: !linkuts2 ? null : () async {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => WebviewUlangan(linkurl: strlinkuts2)));
           },
