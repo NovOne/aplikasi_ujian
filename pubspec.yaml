@@ -29,6 +29,7 @@ environment:
 dependencies:
   webview_flutter: ^2.0.6
   flutter_windowmanager: ^0.2.0
+  shared_preferences: ^2.0.8
 
   flutter:
     sdk: flutter
