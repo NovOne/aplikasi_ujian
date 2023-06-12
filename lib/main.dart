@@ -1,115 +1,245 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:convert';
-import 'webview_ulangan.dart';
-// import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'home_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const Home());
 }
 
-class MyApp extends StatelessWidget {
+class Home extends StatelessWidget {
+  const Home({Key? key}):super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Aplikasi Sekolah')),
-        body: HomePage()
+    return const MaterialApp(
+      home: LoginPage()
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  LoginPageState createState() => LoginPageState();
+}
+
+class LoginPageState extends State<LoginPage> {
+  String cachenama = '';
+  bool isLoggedIn = false;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
+  String? name;
+  String? email;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  var x;
+
+  @override
+  void initState() {
+    // checkLogin();
+    super.initState();
+    autoLogIn();
+    // x = _login();
+  }
+
+  void autoLogIn() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('cacheusername');
+    email = prefs.getString('cacheemail');
+
+    debugPrint('Nama' + name.toString());
+
+    if (name != null && email != null) {
+      setState(() {
+        isLoggedIn = true;
+      });
+    } 
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      body: Stack(
+        children: <Widget> [
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              iconTheme: const IconThemeData(
+                color: Colors.green,
+              ),
+              elevation: 0,
+              title: const Text('Masuk ke Akun', 
+                style: TextStyle(color: Colors.green)),
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+            ),
+            body: isLoggedIn ? buildBody(context) : Container(
+              color: Colors.transparent,
+              child: ElevatedButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const HomePage()));
+                }
+              )
+            )
+          )
+        ]
+      )
+      );  
+    }
+  /* Future<void> createAccount() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('cacheusername', nameController.text);
+    prefs.setString('cacheemail', emailController.text);
+
+    setState(() {
+      name = prefs.getString('cacheusername');
+      isLoggedIn = true;
+    });
+
+    // if (isLoggedIn) Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const HomePage()));
+  }
+  */
+  Widget buildBody(BuildContext context) {
+    return FutureBuilder(
+      future: _login(),
+      builder:(context, snapshot) {
+        debugPrint(snapshot.data.toString());
+        return const Center(child: CircularProgressIndicator());
+      }
+    );
+  }
+
+  Future<String> _login() async {
+    await Future.delayed(const Duration(seconds: 3)).then((value) {
+      debugPrint('masuk delayed');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) {
+          return const HomePage();
+        })
+      );
+    });
+
+    debugPrint('sebelum return');
+    return 'not Logined';
+  }
+
+  Widget direct(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: ListView(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: nameController,
+                textAlign: TextAlign.left,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  hintText: 'Username'
+                )
+              ),
+              Container(
+                margin: const EdgeInsets.only(top:10),
+                child: TextField(
+                  controller: emailController,
+                  textAlign: TextAlign.left,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5.0),
+                      ),
+                    ),
+                    hintText: 'Email'
+                  )
+                )
+              ),
+              Container(
+                height: 50,
+                margin: const EdgeInsets.only(top:10.0),
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary:Colors.purpleAccent,
+                    textStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontStyle: FontStyle.normal
+                    )
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const HomePage()));
+                    // createAccount();
+                    /* final SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.setString('cacheusername', nameController.text);
+                    prefs.setString('cacheemail', emailController.text);
+
+                    name = prefs.getString('cacheusername');
+                    email = prefs.getString('cacheemail');
+
+                    if (name != null && email != null) {
+                      setState(() {
+                        isLoggedIn = true;
+                      });
+                    }
+
+                    if (isLoggedIn) Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const HomePage()));   
+                    */
+                  }, 
+                  child: const Text('Buat Akun'),
+                )
+              )                  ]
+          )
+        ]
       )
     );
   }
-}
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  var data;
-  bool linkuts1 = false;
-  bool linkuts2 = false;
-  String? strlinkuts1;
-  String? strlinkuts2;
-
-  @override
-  void initState () {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]); // Untuk menghilangkan status bar/notification bar
-    // markerIcon(); // Add marker for only current location
-    // getLocation();
-    super.initState();
-    getData();
-  }
-
-  Future<String> getData() async {
-    String? response;
-    const kelas = "X AK 1";
-    var url = "https://raw.githubusercontent.com/NovOne/FindTambalban/master/assets/daftar.json";
-
-    try {
-      // var res = await http.get(Uri.parse(url), headers: { 'Content-Type':'application/json' });
-      // data = await json.decode(res.body);
-
-      response = await rootBundle.loadString('assets/daftar_menu.json');
-      data = await json.decode(response.toString());
-    }
-    catch (e) {
-      debugPrint('Kesalahan: ' + e.toString());
-    }
-
-    // debugPrint (data['hasil'][0]['uts1']);
-    debugPrint (data['link_uts1']);
-    setState(() {
-      if (kelas == "X AK 1") {
-        linkuts1 = data['hasil'][0]['uts1'];
-        linkuts2 = data['hasil'][0]['uts2'];
-      }
-      else if (kelas == "X AK 2") {
-        linkuts1 = data['hasil'][1]['uts1'];
-        linkuts2 = data['hasil'][1]['uts2'];
-      }
-      else if (kelas == "X AK 3") {
-        linkuts1 = data['hasil'][2]['uts1'];
-        linkuts2 = data['hasil'][2]['uts2'];
-      }      
-    });
-
-
-    strlinkuts1 = data['link_uts1'];
-    strlinkuts2 = data['link_uts2'];
-    return 'Sukses';
-  }
-  
-  @override
-  void dispose() {
-    super.dispose();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values); // untuk menjadikan normal kembali tampilannya
-  }
-
-  @override
+  /*@override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(children: [
-        ElevatedButton.icon(
-          icon: Icon(Icons.book_online_rounded, size: 24.0),
-          label: const Text("Ulangan Harian 1"),
-          onPressed: !linkuts1 ? null : () async {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => WebviewUlangan(linkurl: strlinkuts1)));
-          },
-          style: TextButton.styleFrom(backgroundColor: Colors.green)
-        ),
-        ElevatedButton.icon(
-          icon: const Icon(Icons.book_online_rounded, size: 24.0),
-          label: const Text("Ulangan Harian 2"),
-          onPressed: !linkuts2 ? null : () async {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => WebviewUlangan(linkurl: strlinkuts2)));
-          },
-          style: TextButton.styleFrom(backgroundColor: Colors.green)
-        )
-      ])
+    /* if (isLoggedIn) {
+      // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const HomePage()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const HomePage()));
+    }*/
+
+    return MaterialApp(
+      home: Scaffold(
+      key: _scaffoldKey,
+      body: Stack(
+        children: <Widget> [
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              iconTheme: const IconThemeData(
+                color: Colors.green,
+              ),
+              elevation: 0,
+              title: const Text('Masuk ke Akun', 
+                style: TextStyle(color: Colors.green)),
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+            ),
+            body: isLoggedIn ? buildBody(context) : Container(
+              child: ElevatedButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const HomePage()));
+                }
+              )
+            )
+          )
+        ]
+      )
+      )         
     );
-  }
+  }*/
+  
 }

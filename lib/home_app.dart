@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'webview_ulangan.dart';
 // import 'package:http/http.dart' as http;
@@ -30,7 +31,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+class _HomePageState extends State<HomePage> {
+// class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   var data;
   bool linkuts1 = false;
   bool linkuts2 = false;
