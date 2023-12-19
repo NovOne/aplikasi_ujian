@@ -1549,6 +1549,153 @@
          "area": "Jakarta Barat",
          "tipe": "",
          "time_op":""
+      },
+      {
+         "lat" : -6.132245,
+         "lon" : 106.735337,
+         "area": "Jakarta Barat",
+         "tipe": "Portabel",
+         "time_op":""
+      },
+      {
+         "lat" : -6.126615,
+         "lon" : 106.724765,
+         "area": "Jakarta Barat",
+         "tipe": "Tanpa Atap",
+         "time_op":""
+      },
+      {
+         "lat" : -6.140023,
+         "lon" : 106.742272,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.133719,
+         "lon" : 106.729900,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.124875,
+         "lon" : 106.723408,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.119545,
+         "lon" : 106.719567,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.118595,
+         "lon" : 106.718999,
+         "area": "Jakarta Barat",
+         "tipe": "Portabel",
+         "time_op":""
+      },
+      {
+         "lat" : -6.118416,
+         "lon" : 106.719061,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.101328,
+         "lon" : 106.715399,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.100748,
+         "lon" : 106.706540,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.142226,
+         "lon" : 106.739327,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.161986,
+         "lon" : 106.747592,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.162552,
+         "lon" : 106.747730,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.173243,
+         "lon" : 106.748701,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.175587,
+         "lon" : 106.765825,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.183810,
+         "lon" : 106.767760,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.184064,
+         "lon" : 106.768124,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.178370,
+         "lon" : 106.780424,
+         "area": "Jakarta Barat",
+         "tipe": "Portabel",
+         "time_op":""
+      },
+      {
+         "lat" : -6.186701,
+         "lon" : 106.795191,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.189529,
+         "lon" : 106.794857,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
+      },
+      {
+         "lat" : -6.189695,
+         "lon" : 106.793601,
+         "area": "Jakarta Barat",
+         "tipe": "",
+         "time_op":""
       }
    ]
 }
